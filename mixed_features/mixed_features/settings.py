@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'fcsp@@0#fw-0c%hh1qhm^qiietm3@zs-l+!axr5lw&ff(!$fl('
+SECRET_KEY = '=d!m2+$4^=g9nqxti4y6*78%hdt60_ow!ozz5t^qe^h_r(vxwq'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,9 +37,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'mixed_features_api',
+
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -76,9 +80,9 @@ WSGI_APPLICATION = 'mixed_features.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.path.join(BASE_DIR, 'db.mysql'),
+        'NAME': 'mixed_features',
         'USER': 'root',
-        'PASSWORD': 'root',
+        'PASSWORD': 'root'
     }
 }
 
