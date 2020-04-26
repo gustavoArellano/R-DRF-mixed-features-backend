@@ -1,4 +1,4 @@
-from .mixed_features_api.serialziers import UserSerializer
+from mixed_features_api.serializers import UserSerializer
 
 def my_jwt_response_handler(token, user = None, request = None): 
     return {
