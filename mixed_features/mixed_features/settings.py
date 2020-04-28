@@ -26,9 +26,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'mixed_features_api',
+    'mixed_features_api.apps.MixedFeaturesApiConfig',
     'corsheaders',
 ]
+
+AUTH_USER_MODEL = 'mixed_features_api.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -53,7 +55,6 @@ REST_FRAMEWORK = {
 }
 
 JWT_AUTH = {
-    
     'JWT_RESPONSE_PAYLOAD_HANDLER': 'mixed_features.utils.my_jwt_response_handler'
 }
 
@@ -86,7 +87,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'mixed_features',
         'USER': 'root',
-        'PASSWORD': 'root'
+        'PASSWORD': 'root',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
     }
 }
 
@@ -129,6 +132,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-CORS_ORIGIN_WHITELIST = {
+CORS_ORIGIN_WHITELIST = (
     'http://localhost:3000',
-}
+)
