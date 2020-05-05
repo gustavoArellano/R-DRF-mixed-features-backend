@@ -7,8 +7,8 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = 'id', 'username', 'email', 'password', 'zip_code'
-        extra_kwargs = {'password': {'write_only': True}}
+        fields = 'id', 'image', 'first_name', 'last_name', 'username', 'email', 'zip_code', 
+        # extra_kwargs = {'password': {'write_only': True}}
 
 class UserSerializerWithToken(serializers.ModelSerializer): 
     token = serializers.SerializerMethodField() 
@@ -24,6 +24,7 @@ class UserSerializerWithToken(serializers.ModelSerializer):
 
     def create(self, validated_data): 
         user = User(
+            image = validated_data['image'],
             first_name = validated_data['first_name'],
             last_name = validated_data['last_name'],
             username = validated_data['username'],
@@ -34,19 +35,13 @@ class UserSerializerWithToken(serializers.ModelSerializer):
         user.save()
         return user
 
-        # def create(self, validated_data): 
-        #     user = User(
-        #         first_name = validated_data['first_name'],
-        #         last_name = validated_data['last_name'],
-        #         username = validated_data['username'],
-        #         email = validated_data['email'],
-        #         password = make_password(validated_data['password'])
-        #     )
+    # def update(self, instance, validated_data):
+    #     profile_data = validated_data.pop('proifle')
+    #     profile = instance.profile
 
-        #     user.save()
-        #     return user
+        # instance
 
     class Meta: 
         model = User
-        fields = '__all__'
+        fields = '__all__' 
         extra_kwargs = {'password': {'write_only': True}}

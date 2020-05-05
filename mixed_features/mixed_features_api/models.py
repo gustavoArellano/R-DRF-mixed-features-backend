@@ -2,13 +2,14 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 class UserManager(BaseUserManager):
-    def create_user(self, username, email, first_name, last_name, zip_code, password = None):
+    def create_user(self, image, username, email, first_name, last_name, zip_code, password = None):
         if not username:
             raise ValueError("Username required!")
 
         user = self.model(
             email = self.normalize_email(email)
         )
+        user.image = image
         user.username = username
         user.first_name = first_name
         user.last_name = last_name
@@ -17,8 +18,9 @@ class UserManager(BaseUserManager):
         user.save(using = self._db)
         return user
 
-    def create_staffuser(self, username, email, first_name, last_name, password, zip_code):
+    def create_staffuser(self, image, username, email, first_name, last_name, password, zip_code):
         user = self.create_user(
+            image, 
             username,
             email,
             first_name,
@@ -31,8 +33,9 @@ class UserManager(BaseUserManager):
         user.save(using = self._db)
         return user
 
-    def create_superuser(self, username, email, first_name, last_name, password, zip_code):
+    def create_superuser(self, image, username, email, first_name, last_name, password, zip_code):
         user = self.create_user(
+            image,
             username,
             email,
             first_name,
@@ -47,6 +50,7 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser):
+    image = models.ImageField(default='./placeholder_image/profile-placeholder.jpg', upload_to='images', blank = True)
     username = models.CharField(max_length = 25, unique = True)
     first_name = models.CharField(max_length = 25)
     last_name = models.CharField(max_length = 25)
