@@ -50,6 +50,11 @@ class UserManager(BaseUserManager):
         user.save(using = self._db)
         return user
 
+class EventManager(models.Manager):
+    def event_validation(self, postData):
+        errors = {'test error'}
+        return errors
+
 
 class User(AbstractBaseUser):
     image = models.ImageField(upload_to='images', blank = True, null = True)
@@ -97,5 +102,17 @@ class User(AbstractBaseUser):
         return self.active
 
     objects = UserManager()
+
+class Event(models.Model):
+    users_going = models.ManyToManyField(User, related_name = "users_going_related")
+    event_by_user = models.ForeignKey(User, related_name = "events_by_user", on_delete = models.CASCADE)
+    title = models.CharField(max_length = 255)
+    description = models.CharField(max_length = 255)
+    zip_code = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add = True)
+    updated_at = models.DateTimeField(auto_now = True)
+    objects = EventManager()
+
+
 
 
