@@ -53,6 +53,10 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ),
+    # 'DEFAULT_PARSER_CLASSES': [
+    #     'rest_framework.parsers.MultiPartParser',
+    #     'rest_framework.parsers.FormParser',
+    # ]
 }
 
 JWT_AUTH = {
@@ -134,7 +138,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-MEDIA_URL = '/media'
+MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'mixed_features')
 
 CORS_ORIGIN_WHITELIST = (

@@ -59,7 +59,7 @@ def userUpdate(request, pk):
         print(serializer)
         serializer.save()
         return Response(serializer.data, print("User updated!!!!"))
-    return Response(serializer.errors, print("failed update?"))
+    return Response(serializer.errors, print("Update Failed!!!"))
 
 # @api_view(['DELETE'])
 # def userDelete(request, pk):

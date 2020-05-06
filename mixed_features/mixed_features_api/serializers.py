@@ -24,7 +24,6 @@ class UserSerializerWithToken(serializers.ModelSerializer):
 
     def create(self, validated_data): 
         user = User(
-            image = validated_data['image'],
             first_name = validated_data['first_name'],
             last_name = validated_data['last_name'],
             username = validated_data['username'],

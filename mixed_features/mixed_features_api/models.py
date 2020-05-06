@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.conf import settings
+
 
 class UserManager(BaseUserManager):
     def create_user(self, image, username, email, first_name, last_name, zip_code, password = None):
@@ -50,7 +52,7 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser):
-    image = models.ImageField(default='./placeholder_image/profile-placeholder.jpg', upload_to='images', blank = True)
+    image = models.ImageField(upload_to='images', blank = True, null = True)
     username = models.CharField(max_length = 25, unique = True)
     first_name = models.CharField(max_length = 25)
     last_name = models.CharField(max_length = 25)
