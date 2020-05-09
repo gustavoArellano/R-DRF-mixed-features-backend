@@ -6,21 +6,27 @@ from rest_framework.decorators import api_view, authentication_classes, permissi
 from rest_framework.views import APIView
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.response import Response 
-from .serializers import UserSerializer, UserSerializerWithToken
-from . models import User
+from .serializers import UserSerializer, UserSerializerWithToken, EventSerializer
+from . models import User, Event
 
 
 @api_view(['GET'])
 def apiOverview(request):
     api_urls = {
-        'List': '/user-list/',
-        'Detail View': '/user-detail/<str:pk>/',
-        'Create': '/user-create/',
-        'Update': '/user-update/<str:pk>/',
-        'Delete': '/user-delete/<str:pk>/'
+        'User List': '/user-list/',
+        'User Detail View': '/user-detail/<str:pk>/',
+        'User Create': '/user-create/',
+        'User Update': '/user-update/<str:pk>/',
+        'User Delete': '/user-delete/<str:pk>/',
+        'EventList': '/event-list/',
+        'Event Detail View': '/event-detail/<str:pk>/',
+        'Event Create': '/event-create/',
+        'Event Update': '/event-update/<str:pk>/',
+        'Event Delete': '/event-delete/<str:pk>/'
     }
     return Response(api_urls)
 
+################# USER VIEWS #################
 @api_view(['GET'])
 def current_user(request):
     serializer = UserSerializer(request.user)
@@ -56,7 +62,6 @@ def userUpdate(request, pk):
     user = User.objects.get(id = pk)
     serializer = UserSerializer(instance = user, data = request.data)
     if serializer.is_valid():
-        print(serializer)
         serializer.save()
         return Response(serializer.data, print("User updated!!!!"))
     return Response(serializer.errors, print("Update Failed!!!"))
@@ -66,3 +71,51 @@ def userUpdate(request, pk):
 #     user = User.objects.get(id = pk)
 #     user.delete()
 #     return Response('Item successfully deleted!')
+
+
+################# EVENT VIEWS #################
+@api_view(['POST'])
+def eventCreate(request):
+    authentication_classes(TokenAuthentication, )
+    permission_classes = (permissions.IsAuthenticated, )
+    serializer = EventSerializer(data = request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, print(serializer.data, "Event created!!"))
+    else:
+        return Response(serializer.data, print(serializer.errors, "Error in event Create View"))
+
+@api_view(['GET'])
+def eventList(request):
+    authentication_classes(TokenAuthentication, )
+    permission_classes = (permissions.IsAuthenticated, )
+    users = User.objects.all()
+    events = Event.objects.all()
+    serializer = EventSerializer(events, many = True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def attendingList(request, pk):
+    authentication_classes(TokenAuthentication, )
+    permission_classes = (permissions.IsAuthenticated, )
+    user = User.objects.get(id = pk)
+    attending_event = user.users_going_related.all()
+    serializer = EventSerializer(attending_event, many = True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def notAttendingList(request, pk):
+    authentication_classes(TokenAuthentication, )
+    permission_classes = (permissions.IsAuthenticated, )
+    user = User.objects.get(id = pk)
+    event_not_attending = Event.objects.exclude(users_going = user.id)
+    serializer = EventSerializer(event_not_attending, many = True)
+    return Response(serializer.data)
+
+@api_view(['PUT'])
+def joinEvent(request, pk):
+    return Response("Backend not written yet")
+
+@api_view(['PUT'])
+def leaveEvent(request, pk): 
+    return Response("Backend not written yet")

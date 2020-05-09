@@ -113,6 +113,9 @@ class Event(models.Model):
     updated_at = models.DateTimeField(auto_now = True)
     objects = EventManager()
 
+    def __str__(self):
+        return self.title
+
 
 
 

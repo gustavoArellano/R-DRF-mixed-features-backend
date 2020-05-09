@@ -1,13 +1,13 @@
 from rest_framework import serializers  
-from .models import User
+from .models import User, Event
 from rest_framework_jwt.settings import api_settings
 from django.contrib.auth.hashers import make_password
 
 class UserSerializer(serializers.ModelSerializer):
-
+    events_by_user = serializers.PrimaryKeyRelatedField(many = True, read_only = True)
     class Meta:
         model = User
-        fields = 'id', 'image', 'first_name', 'last_name', 'username', 'email', 'zip_code', 
+        fields = 'id', 'image', 'first_name', 'last_name', 'username', 'email', 'zip_code', 'events_by_user', 
         # extra_kwargs = {'password': {'write_only': True}}
 
 class UserSerializerWithToken(serializers.ModelSerializer): 
@@ -34,13 +34,12 @@ class UserSerializerWithToken(serializers.ModelSerializer):
         user.save()
         return user
 
-    # def update(self, instance, validated_data):
-    #     profile_data = validated_data.pop('proifle')
-    #     profile = instance.profile
-
-        # instance
-
     class Meta: 
         model = User
         fields = '__all__' 
         extra_kwargs = {'password': {'write_only': True}}
+
+class EventSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Event
+        fields = '__all__'
