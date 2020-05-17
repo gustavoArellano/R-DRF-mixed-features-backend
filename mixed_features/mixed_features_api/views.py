@@ -60,17 +60,20 @@ def userUpdate(request, pk):
     authentication_classes(TokenAuthentication, )
     permission_classes = (permissions.IsAuthenticated, )
     user = User.objects.get(id = pk)
+    print("THIS IS THE DATA BEING RECIEVED = ", request.data)
     serializer = UserSerializer(instance = user, data = request.data)
     if serializer.is_valid():
         serializer.save()
+        print("DATA = ", serializer.data)
         return Response(serializer.data, print("User updated!!!!"))
+    print("ERRORS = ", serializer.errors)
     return Response(serializer.errors, print("Update Failed!!!"))
 
-# @api_view(['DELETE'])
-# def userDelete(request, pk):
-#     user = User.objects.get(id = pk)
-#     user.delete()
-#     return Response('Item successfully deleted!')
+@api_view(['DELETE'])
+def userDelete(request, pk):
+    user = User.objects.get(id = pk)
+    user.delete()
+    return Response('User successfully deleted!')
 
 
 ################# EVENT VIEWS #################
