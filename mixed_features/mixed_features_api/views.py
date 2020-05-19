@@ -98,6 +98,15 @@ def eventList(request):
     return Response(serializer.data)
 
 @api_view(['GET'])
+def eventDetail(request, pk):
+    authentication_classes(TokenAuthentication, )
+    permission_classes = (permissions.IsAuthenticated, )
+    event = Event.objects.get(id = pk)
+    print(event)
+    serializer = EventSerializer(event, many = False)
+    return Response(serializer.data)        
+
+@api_view(['GET'])
 def attendingList(request, pk):
     authentication_classes(TokenAuthentication, )
     permission_classes = (permissions.IsAuthenticated, )
@@ -115,10 +124,21 @@ def notAttendingList(request, pk):
     serializer = EventSerializer(event_not_attending, many = True)
     return Response(serializer.data)
 
-@api_view(['PUT'])
-def joinEvent(request, pk):
-    return Response("Backend not written yet")
+@api_view(['POST'])
+def joinEvent(request, pk, id):
+    authentication_classes(TokenAuthentication, )
+    permission_classes = (permissions.IsAuthenticated, )
+    event = Event.objects.get(id = pk)
+    user = User.objects.get(id = id)
+    event.users_going.add(user)
+    return Response(print("JOINED!!!!!!!"))
 
-@api_view(['PUT'])
-def leaveEvent(request, pk): 
-    return Response("Backend not written yet")
+
+@api_view(['POST'])
+def leaveEvent(request, pk, id): 
+    authentication_classes(TokenAuthentication, )
+    permission_classes = (permissions.IsAuthenticated, )
+    event = Event.objects.get(id = pk)
+    user = User.objects.get(id = id)
+    event.users_going.remove(user)
+    return Response(print("LEFT!!!!!!!"))
