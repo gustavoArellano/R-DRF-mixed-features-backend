@@ -104,8 +104,18 @@ def eventDetail(request, pk):
     event = Event.objects.get(id = pk)
     print(event)
     serializer = EventSerializer(event, many = False)
-    return Response(serializer.data)        
+    return Response(serializer.data)   
 
+@api_view(['GET'])   
+def hostingList(request, pk):
+    authentication_classes(TokenAuthentication, )
+    permission_classes = (permissions.IsAuthenticated, )
+    print(pk)
+    user = User.objects.get(id = pk)
+    events = Event.objects.filter(event_by_user_id = user.id)
+    serializer = EventSerializer(events, many = True)
+    return Response(print("IM GETTING THESE", serializer.data))
+ 
 @api_view(['GET'])
 def attendingList(request, pk):
     authentication_classes(TokenAuthentication, )
