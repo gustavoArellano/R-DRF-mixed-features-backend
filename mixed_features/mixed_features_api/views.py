@@ -114,7 +114,8 @@ def hostingList(request, pk):
     user = User.objects.get(id = pk)
     events = Event.objects.filter(event_by_user_id = user.id)
     serializer = EventSerializer(events, many = True)
-    return Response(print("IM GETTING THESE", serializer.data))
+    print(serializer.data)
+    return Response(serializer.data)
  
 @api_view(['GET'])
 def attendingList(request, pk):
