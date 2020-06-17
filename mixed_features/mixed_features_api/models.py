@@ -117,7 +117,10 @@ class Event(models.Model):
         return self.title
 
 class Relationships(models.Model):
+    followed_id = models.ForeignKey(User, related_name = "followings", on_delete = models.CASCADE)
+    follower_id = models.IntegerField(null = True)
     created_at = models.DateTimeField(auto_now_add = True)
     updated_at = models.DateTimeField(auto_now = True)
+    created_at = models.DateTimeField(auto_now_add = True)
 
 
